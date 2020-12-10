@@ -10,6 +10,7 @@ import net.okocraft.scoreboard.listener.PluginListener;
 import net.okocraft.scoreboard.external.PlaceholderAPIHooker;
 import net.okocraft.scoreboard.external.ProtocolLibChecker;
 import net.okocraft.scoreboard.locale.LanguageManager;
+import net.okocraft.scoreboard.locale.MessageBuilder;
 import net.okocraft.scoreboard.task.UpdateTask;
 import net.okocraft.scoreboard.util.LengthChecker;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,6 +33,7 @@ public class ScoreboardPlugin extends JavaPlugin {
     private BoardManager boardManager;
     private DisplayManager displayManager;
     private LanguageManager languageManager;
+    private MessageBuilder messageBuilder;
     private PlayerListener playerListener;
     private PluginListener pluginListener;
 
@@ -61,6 +63,8 @@ public class ScoreboardPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         boardManager = new BoardManager(this);
+
+        messageBuilder = new MessageBuilder(this);
 
         playerListener = new PlayerListener(this);
         playerListener.register();
@@ -117,6 +121,10 @@ public class ScoreboardPlugin extends JavaPlugin {
 
     public @NotNull LanguageManager getLanguageManager() {
         return languageManager;
+    }
+
+    public @NotNull MessageBuilder getMessageBuilder() {
+        return messageBuilder;
     }
 
     public void runAsync(@NotNull Runnable runnable) {
