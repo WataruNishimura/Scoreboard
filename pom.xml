@@ -68,6 +68,12 @@
             <version>2.0.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.siroshun09.mccommand</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.6.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
