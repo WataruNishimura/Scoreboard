@@ -35,10 +35,4 @@ public class MessageBuilder {
     public void sendMessageWithPrefix(@NotNull DefaultMessage message, @NotNull MessageReceiver receiver) {
         getMessageWithPrefix(message, receiver).send(receiver);
     }
-
-    public void sendNoPermission(@NotNull MessageReceiver receiver, @NotNull Command command) {
-        getMessageWithPrefix(DefaultMessage.NO_PERMISSION, receiver)
-                .replace(Placeholders.PERMISSION, command)
-                .send(receiver);
-    }
 }
