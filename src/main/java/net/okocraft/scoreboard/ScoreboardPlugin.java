@@ -1,14 +1,18 @@
 package net.okocraft.scoreboard;
 
+import com.github.siroshun09.mccommand.bukkit.BukkitCommandFactory;
+import com.github.siroshun09.mccommand.bukkit.paper.AsyncTabCompleteListener;
+import com.github.siroshun09.mccommand.bukkit.paper.PaperChecker;
+import net.okocraft.scoreboard.command.BoardCommand;
 import net.okocraft.scoreboard.config.BoardManager;
 import net.okocraft.scoreboard.config.Configuration;
 import net.okocraft.scoreboard.display.manager.BukkitDisplayManager;
 import net.okocraft.scoreboard.display.manager.DisplayManager;
 import net.okocraft.scoreboard.display.manager.PacketDisplayManager;
-import net.okocraft.scoreboard.listener.PlayerListener;
-import net.okocraft.scoreboard.listener.PluginListener;
 import net.okocraft.scoreboard.external.PlaceholderAPIHooker;
 import net.okocraft.scoreboard.external.ProtocolLibChecker;
+import net.okocraft.scoreboard.listener.PlayerListener;
+import net.okocraft.scoreboard.listener.PluginListener;
 import net.okocraft.scoreboard.locale.LanguageManager;
 import net.okocraft.scoreboard.locale.MessageBuilder;
 import net.okocraft.scoreboard.task.UpdateTask;
@@ -17,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -76,6 +81,14 @@ public class ScoreboardPlugin extends JavaPlugin {
 
         if (PlaceholderAPIHooker.checkEnabled(getServer())) {
             printPlaceholderIsAvailable();
+        }
+
+        var command = new BoardCommand(this);
+        Optional.ofNullable(getCommand("board"))
+                .ifPresent(pluginCommand -> BukkitCommandFactory.registerAsync(pluginCommand, command));
+
+        if (PaperChecker.check()) {
+            AsyncTabCompleteListener.register(this, command);
         }
     }
 
