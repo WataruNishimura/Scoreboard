@@ -9,16 +9,19 @@ import net.okocraft.scoreboard.listener.PlayerListener;
 import net.okocraft.scoreboard.listener.PluginListener;
 import net.okocraft.scoreboard.external.PlaceholderAPIHooker;
 import net.okocraft.scoreboard.external.ProtocolLibChecker;
+import net.okocraft.scoreboard.locale.LanguageManager;
 import net.okocraft.scoreboard.task.UpdateTask;
 import net.okocraft.scoreboard.util.LengthChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class ScoreboardPlugin extends JavaPlugin {
 
@@ -28,6 +31,7 @@ public class ScoreboardPlugin extends JavaPlugin {
 
     private BoardManager boardManager;
     private DisplayManager displayManager;
+    private LanguageManager languageManager;
     private PlayerListener playerListener;
     private PluginListener pluginListener;
 
@@ -39,6 +43,16 @@ public class ScoreboardPlugin extends JavaPlugin {
         config = new Configuration(this);
 
         LengthChecker.setLimit(config.getLengthLimit());
+
+        languageManager = new LanguageManager(this);
+
+        try {
+            languageManager.reload();
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "Could not load languages.", e);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         executor = Executors.newFixedThreadPool(config.getThreads());
         scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -99,6 +113,10 @@ public class ScoreboardPlugin extends JavaPlugin {
         }
 
         return displayManager;
+    }
+
+    public @NotNull LanguageManager getLanguageManager() {
+        return languageManager;
     }
 
     public void runAsync(@NotNull Runnable runnable) {

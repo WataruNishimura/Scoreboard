@@ -3,6 +3,9 @@ package net.okocraft.scoreboard.locale;
 import org.jetbrains.annotations.NotNull;
 
 public enum DefaultMessage implements com.github.siroshun09.mcmessage.message.DefaultMessage {
+    PREFIX("prefix", "&8[&6SB&8] &r"),
+
+    NO_PERMISSION("no-permission", "You don't have the permission: %perm%")
     ;
 
     private final String key;
