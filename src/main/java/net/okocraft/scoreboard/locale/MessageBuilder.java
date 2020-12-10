@@ -1,6 +1,5 @@
 package net.okocraft.scoreboard.locale;
 
-import com.github.siroshun09.mccommand.common.Command;
 import com.github.siroshun09.mcmessage.MessageReceiver;
 import com.github.siroshun09.mcmessage.builder.PlainTextBuilder;
 import net.okocraft.scoreboard.ScoreboardPlugin;
